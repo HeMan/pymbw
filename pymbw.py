@@ -1,9 +1,8 @@
 #! /usr/bin/env python
-# file: rfcomm-server.py
-# auth: Albert Huang <albert@csail.mit.edu>
-# desc: simple demonstration of a server application that uses RFCOMM sockets
+# file: pymbw.py
+# auth: Jimmy Hedman <jimmy.hedman@southpole.se>
+# desc: Simple application to talk to SonyEricsson bluetooth watch MBW-100
 #
-# $Id: rfcomm-server.py 518 2007-08-10 07:20:07Z albert $
 
 from bluetooth import *
 import select
@@ -14,7 +13,6 @@ from watch import parser
 
 myparser = parser()
 
-#myparser.parse("AT*SEAM=\"MBW-100\",13")
 
 # Create server for clock to connect to
 watch=BluetoothSocket( RFCOMM )
@@ -25,7 +23,7 @@ port = watch.getsockname()[1]
 
 uuid = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
 
-advertise_service( watch, "My dumper",
+advertise_service( watch, "PyMBW",
                    service_id = uuid,
                    service_classes = [ uuid, SERIAL_PORT_CLASS ],
                    profiles = [ SERIAL_PORT_PROFILE ], 
@@ -42,9 +40,9 @@ try:
 	(rr,ww,er) = select.select([watch_client,sys.stdin],[],[])
 	for r in rr:
 	        if r == watch_client:
-                        data = r.recv(1024, 64)
-                        print "watch [%s]" % data.strip("\r\n")
-                        response = myparser.parse(data.strip("\r\n"))
+                        data = r.recv(1024, 64).strip("\r\n")
+                        print "watch [%s]" % data
+                        response = myparser.parse(data)
                         print "response [%s]" % response
                         watch_client.send(response+"\n\r")
                 if r == sys.stdin:
