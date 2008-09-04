@@ -42,7 +42,11 @@ Select charcter encoding (UTF-8)
 OK
 
 AT*SEMP=2
-Play/pause?
+Play/pause
+OK
+
+AT*SEMP=5
+Next
 OK
 
 AT+CCLK?
