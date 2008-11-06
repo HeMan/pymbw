@@ -18,6 +18,16 @@ class parser(object):
         def do_default(self, argument):
                 print "Default action"
                 return "OK"                        
+        def do_atstarsemp(self, argument):
+            print "Multimedia"
+            print argument
+            if argument == 1:
+                print "Play"
+            elif argument == 2:
+                print "Pause"
+            elif argument == 5:
+                print "Next"
+            return "OK"
 
         def parse(self, string):
                 setget = False
